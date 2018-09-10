@@ -30,7 +30,7 @@ class NoiseLayer(nn.Module):
         if self.noise.numel() == 0:
             self.noise.resize_(x.data[0].shape).uniform_()
             self.noise = (2 * self.noise - 1) * self.level
-
+        print (self.noise.data)
         y = torch.add(x, self.noise)
         z = self.layers(y)
         return z
