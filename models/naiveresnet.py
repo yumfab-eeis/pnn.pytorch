@@ -24,14 +24,17 @@ class NoiseLayer(nn.Module):
             nn.BatchNorm2d(in_planes),
             nn.Conv2d(in_planes, out_planes, kernel_size=1, stride=1),
         )
-        print ('1',self.noise.data[0])
+        if self.noise.numel() != 0:
+            print ('1',self.noise.data[0])
 
     def forward(self, x):
-        print ('2',self.noise.data[0])
+        if self.noise.numel() != 0:
+            print ('2',self.noise.data[0])
         if self.noise.numel() == 0:
             self.noise.resize_(x.data[0].shape).uniform_()
             self.noise = (2 * self.noise - 1) * self.level
-        print ('3',self.noise.data[0])
+        if self.noise.numel() != 0:
+            print ('3',self.noise.data[0])
         y = torch.add(x, self.noise)
         z = self.layers(y)
         return z
