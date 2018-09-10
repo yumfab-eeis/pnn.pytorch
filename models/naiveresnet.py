@@ -18,19 +18,20 @@ class NoiseLayer(nn.Module):
     def __init__(self, in_planes, out_planes, level):
         super(NoiseLayer, self).__init__()
         self.noise = nn.Parameter(torch.Tensor(0), requires_grad=False).to(device)
-        print (self.noise.data)
         self.level = level
         self.layers = nn.Sequential(
             nn.ReLU(True),
             nn.BatchNorm2d(in_planes),
             nn.Conv2d(in_planes, out_planes, kernel_size=1, stride=1),
         )
+        print ('1',self.noise.data)
 
     def forward(self, x):
+        print ('2',self.noise.data)
         if self.noise.numel() == 0:
             self.noise.resize_(x.data[0].shape).uniform_()
             self.noise = (2 * self.noise - 1) * self.level
-        print (self.noise.data)
+        print ('3',self.noise.data)
         y = torch.add(x, self.noise)
         z = self.layers(y)
         return z
